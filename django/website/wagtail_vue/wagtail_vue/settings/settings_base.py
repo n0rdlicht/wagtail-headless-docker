@@ -188,6 +188,10 @@ INSTALLED_APPS = (
     'wagtail.core',
     'wagtail.api.v2',
 
+    "grapple",
+    "graphene_django",
+    "channels",
+
     'rest_framework',
     'modelcluster',
     'taggit',
@@ -229,11 +233,14 @@ LOGGING = {
 WSGI_APPLICATION = 'wsgi.application'
 # ======== END WSGI CONFIGURATION
 
-
-# ======== WAGTAIL SETTINGS CONFIGURATION
+# ======== WAGTAIL SITE CONFIGURATION
 WAGTAIL_SITE_NAME = "Wagtail/Vue Website"
-# ======== END WAGTAIL SETTINGS CONFIGURATION
+# ======== END WAGTAIL SITE CONFIGURATION
 
+# ======== GRAPPLE CONFIGURATION
+GRAPHENE = { "SCHEMA": "grapple.schema.schema" }
+GRAPPLE_APPS = { "pages": "" }
+# ======== END GRAPPLE CONFIGURATION
 
 # ======== ERROR MESSAGE FOR MISSING ENVIRONMENT VARIABLES
 def get_env_variable(var_name):
