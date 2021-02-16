@@ -1,5 +1,4 @@
-FROM node:10-alpine
-MAINTAINER Bryan Hyshka <bryan@hyshka.com>
+FROM node:current-alpine
 
 # Set a term for terminal inside the container, can't clear without it
 ENV TERM xterm-256color
@@ -9,9 +8,10 @@ ENV TERM xterm-256color
 ENV PATH /app/node_modules/.bin:$PATH
 
 # Update, install, and cleanup
-# RUN apk update \
-    # && apk add git \
-    # && rm -rf /var/cache/apk/*
+RUN apk update \
+    && apk add git 
+
+#RUN rm -rf /var/cache/apk/*
 
 # Add the project requirements
 # This will add the package.json and package-lock.json if it exists

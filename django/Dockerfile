@@ -1,21 +1,22 @@
-FROM ubuntu:18.04
-MAINTAINER Kalob Taulien <kalob@kalob.io>
+FROM alpine:latest
 
 # Needed for better experience in container terminal
 ENV TERM=xterm-256color
 
 # Update and install
-RUN apt-get update && apt-get install -y \
-      git \
-      wget \
-      python3-dev \
-      python3-pip
+RUN apk update 
+RUN apk add \
+      bash \
+      git wget \
+      gcc libc-dev \
+      python3-dev py3-pip \
+      py3-greenlet py3-pillow
 
 # Set the encoding to avoid issues with internationalization packages.
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
-RUN pip3 install --upgrade pip
+RUN pip3 install --upgrade pip setuptools wheel
 
 # Add the project requirements
 ADD website/requirements /opt/requirements

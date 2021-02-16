@@ -10,9 +10,6 @@ a modern PWA engine with support for GraphQL and other data sources.
 After you follow the [Deployment](#Deployment) steps below, the Django server will run on port `8000`, while the
 Node.js server compiling the Vue.js app will run on port `8080`.
 
-**Note that you currently need to start the servers from within the server console.**
-Support for `docker-compose` is pending!
-
 To access the Wagtail admin go to http://localhost:8000/admin/ - and then
 login with the superuser you created with the `createsuperuser` command. If the setup
 succeeded, you should be able to edit the content of a default home page.
@@ -24,6 +21,12 @@ The frontend app is expecting a GraphQL API to be available at `localhost:8000/g
 The regular Django API is available at `localhost:8000/api/v2/`.
 
 ## Deployment
+
+Deployment with [Docker Compose](https://docs.docker.com/compose/install/) should be rather quick:
+
+`docker-compose up`
+
+If anything fails, you can go through the build steps defined in the [Makefile](Makefile):
 
 ```
 # build image and start containers

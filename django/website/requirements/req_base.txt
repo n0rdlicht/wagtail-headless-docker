@@ -1,8 +1,5 @@
-bpython
-Pillow==4.*
-Django==2.2.*
 django-adminactions==1.*
-django-extensions==1.*
-django-cors-headers==2.4.*
-wagtail==2.6.*
-wagtail_grapple
+django-extensions==3.*
+django-cors-headers==3.7.*
+wagtail>=2.5,<2.12
+wagtail-grapple==0.10.*
