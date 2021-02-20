@@ -4,13 +4,14 @@ FROM alpine:latest
 ENV TERM=xterm-256color
 
 # Update and install
-RUN apk update 
+RUN apk update
 RUN apk add \
       bash \
       git wget \
       gcc libc-dev \
       python3-dev py3-pip \
-      py3-greenlet py3-pillow
+      py3-greenlet py3-pillow \
+      py3-cffi py3-cryptography
 
 # Set the encoding to avoid issues with internationalization packages.
 ENV LANG C.UTF-8

@@ -24,16 +24,13 @@ The regular Django API is available at `localhost:8000/api/v2/`.
 
 Deployment with [Docker Compose](https://docs.docker.com/compose/install/) should be rather quick:
 
-`docker-compose up`
+`make up`
 
 If anything fails, you can go through the build steps defined in the [Makefile](Makefile):
 
 ```
-# build image and start containers
-make up
-
-# enter backend (python) container
-make enter
+# build image, start and enter container
+make refresh
 
 # initialize database (inside container)
 django-admin.py migrate

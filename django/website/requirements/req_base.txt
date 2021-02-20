@@ -3,3 +3,4 @@ django-extensions==3.*
 django-cors-headers==3.7.*
 wagtail>=2.5,<2.12
 wagtail-grapple==0.10.*
+channels==3.0.*
