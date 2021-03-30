@@ -4,6 +4,10 @@
 local_dev.py
 .mypy_cache
 
+# Data and media
+database.sqlite3
+django/website/wagtail_vue/media/*
+
 # Temporary files
 *.swp
 *.swo

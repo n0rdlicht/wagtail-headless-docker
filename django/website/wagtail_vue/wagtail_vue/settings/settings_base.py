@@ -230,6 +230,7 @@ LOGGING = {
 # ======== WSGI CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = 'wsgi.application'
+ASGI_APPLICATION = 'wagtail_vue.routing.application'
 # ======== END WSGI CONFIGURATION
 
 # ======== WAGTAIL SITE CONFIGURATION

@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "koenizspace"
+version = "0.1.0"
+description = "Coworking in Köniz"
+authors = ["Oleg Lavrovsky <oleg@utou.ch>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django-adminactions = "1.*"
+django-extensions = "3.*"
+django-cors-headers = "3.7.*"
+wagtail-grapple = "^0.11.0"
+channels = "^3.0.3"
+wagtail = "^2.12.3"
+
+[tool.poetry.dev-dependencies]
+bpython = "^0.21"
+django-debug-toolbar = "^3.2"
+django-debug-toolbar-template-profiler = "^2.0.2"
+Werkzeug = "^1.0.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
