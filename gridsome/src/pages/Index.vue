@@ -1,11 +1,12 @@
 <template>
   <Layout>
     <g-image alt="Example image" src="~/favicon.png" width="135" />
-    <u>Hello, GraphQL!</u>
+    <u>Latest posts</u>
     <div v-for="page in $page.wagtail.pages" :key="page.id">
-     <h2>{{ page.title }}</h2>
-   </div>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur excepturi labore tempore expedita, et iste tenetur suscipit explicabo! Dolores, aperiam non officia eos quod asperiores</p>
+      <h2>{{ page.title }}</h2>
+      <p class="headline">{{ page.headline}}</p>
+      <img class="thumb">{{ page.}}
+    </div>
   </Layout>
 </template>
 
@@ -16,20 +17,23 @@ export default {}
 <page-query>
 query Wagtail {
   wagtail: wagtail {
-    pages {
-      id
-      slug
-      title
+      pages {
+    	...on wagtail_FlexPage {
+        id,
+        slug,
+      	title,
+        headline,
+        body,
+        attach {
+          rawValue
+          ...on wagtail_ImageChooserBlock {
+            image {
+              url
+            }
+          }
+        }
+      }
     }
   }
 }
 </page-query>
-
-<!--
-{ wagtail { pages {
-	id
-  slug
-  title
-  url
-}}}
--->

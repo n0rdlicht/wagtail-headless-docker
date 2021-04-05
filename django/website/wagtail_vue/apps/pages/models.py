@@ -4,11 +4,15 @@ from django.db import models
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.core.models import Page
-from wagtail.api import APIField
 from wagtail.images.api.fields import ImageRenditionField
-from wagtail.core.fields import StreamField
+from wagtail.core.fields import StreamField, RichTextField
 
-from .streamfields import ContentBlock, ImageGalleryBlock, CallToActionBlock
+from .streamfields import (
+    ButtonBlock,
+    ContentBlock,
+    ImageGalleryBlock,
+    CallToActionBlock,
+)
 
 from grapple.models import (
     GraphQLImage,
@@ -16,89 +20,52 @@ from grapple.models import (
     GraphQLStreamfield,
 )
 
-class HomePage(Page):
-    """A home page class."""
+class FlexPage(Page):
+    """A flexible page class."""
 
-    template = "cms/pages/home_page.html"
+    # template = "cms/pages/home_page.html"
     subpage_types = ['pages.FlexPage']
 
-    banner_subtitle = models.CharField(
-        max_length=50, blank=True, null=True, help_text="An optional banner subtitle"
+    headline = models.TextField(
+        max_length=140, blank=True, null=True,
+        help_text="An optional subtitle"
     )
     banner_image = models.ForeignKey(
         "wagtailimages.Image",
-        null=True,
-        blank=False,
+        null=True, blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
         help_text="An optional banner image",
     )
-
+    body = RichTextField(
+        null=True, blank=True,
+        help_text='Article body'
+    )
     content = StreamField([
         ('ContentBlock', ContentBlock()),
+        ('ButtonBlock', ButtonBlock()),
         ('ImageGalleryBlock', ImageGalleryBlock()),
         ('CallToActionBlock', CallToActionBlock()),
     ], null=True, blank=True)
 
     content_panels = [
-        FieldPanel("title", classname="full title"),
-        ImageChooserPanel("banner_image"),
-        FieldPanel("banner_subtitle"),
+        FieldPanel('title', classname="full title"),
+        FieldPanel('headline'),
+        FieldPanel('body'),
+        ImageChooserPanel('banner_image'),
         StreamFieldPanel('content'),
     ]
 
-    api_fields = [
-        APIField("title"),
-        APIField("banner_subtitle"),
-        APIField("banner_image"),
-        APIField("banner_image_thumbnail", serializer=ImageRenditionField("fill-100x100", source="banner_image")),
-        APIField("content"),
-    ]
-
     graphql_fields = [
-        GraphQLString("title"),
-        GraphQLString("banner_subtitle"),
+        GraphQLString("headline"),
+        GraphQLString("body"),
         GraphQLImage("banner_image"),
-        GraphQLImage("banner_image_thumbnail"),
+        GraphQLImage("banner_image_thumbnail", serializer=ImageRenditionField("fill-100x100", source="banner_image")),
         GraphQLStreamfield("content"),
     ]
 
     class Meta:
         """Meta information."""
 
-        verbose_name = "Home Page"
-        verbose_name_plural = "Home Pages"
-
-
-class FlexPage(Page):
-    """A Flexible page class. Used for generic pages that don't have a true purpose."""
-
-    template = "cms/pages/flex_page.html"
-    subpage_types = []
-
-    content = StreamField([
-        ('ContentBlock', ContentBlock()),
-        ('ImageGalleryBlock', ImageGalleryBlock()),
-        ('CallToActionBlock', CallToActionBlock()),
-    ], null=True, blank=True)
-
-    content_panels = [
-        FieldPanel("title", classname="full title"),
-        StreamFieldPanel('content'),
-    ]
-
-    api_fields = [
-        APIField("title"),
-        APIField("content"),
-    ]
-
-    graphql_fields = [
-        GraphQLString("title"),
-        GraphQLStreamfield("content"),
-    ]
-
-    class Meta:
-        """Meta information."""
-
-        verbose_name = "Flex Page"
-        verbose_name_plural = "Flex Pages"
+        verbose_name = "Page"
+        verbose_name_plural = "Pages"

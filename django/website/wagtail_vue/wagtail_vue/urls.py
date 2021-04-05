@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls import include, static, url
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.http import HttpResponseRedirect
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
@@ -18,7 +19,7 @@ urlpatterns = [
     url(r'^django-admin/', admin.site.urls),
 
     url(r'^api/v2/', api_router.urls),
-    url(r"", include(grapple_urls)),
+    url(r'^api/', include(grapple_urls)),
 
     url(r'^admin/', include(wagtailadmin_urls)),
     url(r'^documents/', include(wagtaildocs_urls)),
@@ -31,6 +32,9 @@ urlpatterns = [
 
 if settings.DEBUG:
     import debug_toolbar
+    urlpatterns = [ # Redirect home page to admin
+        url(r'^$', lambda r: HttpResponseRedirect('/admin')),
+    ] + urlpatterns
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static.static(
         settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

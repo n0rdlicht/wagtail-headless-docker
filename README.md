@@ -1,9 +1,10 @@
-# Wagtail with Gridsome
+# Wagtail on Gridsome
 
-A trimmed down, revised fork of [hyshka/wagtail-vue-talk](https://github.com/hyshka/wagtail-vue-talk),
-this is a boilerplate project that demonstrates how to use [Wagtail CMS](https://github.com/wagtail)
+This is a boilerplate project that demonstrates how to use [Wagtail CMS](https://github.com/wagtail)
 with a [Vue.js](https://vuejs.org/) frontend based on [Gridsome](https://gridsome.org/),
-a modern PWA engine with support for GraphQL and other data sources.
+a modern PWA engine with support for GraphQL and other data sources. It makes it easier to deploy Wagtail as a self-hosted headless CMS for high-performance hosting on CDN platforms.
+
+_"Wagtail is not an instant website in a box."_ --[Zen of Wagtail](https://github.com/wagtail/wagtail/blob/main/docs/getting_started/the_zen_of_wagtail.md)
 
 ## Installation
 
@@ -52,3 +53,43 @@ gridsome develop
 # stop and remove containers
 make clean
 ```
+
+## Development
+
+The frontend interfaces with Wagtail using the GraphQL API as mentioned above through the [Wagtail Grapple](https://wagtail-grapple.readthedocs.io/en/latest/) library.
+
+![](gridsome/screenshot_graphql.png)
+
+We suggest using Gridsome's default Query tool available at http://localhost:8080/___explore (pictured above). Once you've set up your models and queries, add them to the frontend using Gridsome's [GraphQL data layer](https://gridsome.org/docs/data-layer/) - see [Index.vue](gridsome/src/pages/Index.vue).
+
+Alternatively, use the [Altair GraphQL client](https://altair.sirmuel.design/#download) or similar to connect with the service. A query directly to the GraphQL interface to get page model data might look like this:
+
+```graphql
+{
+  pages {
+    ...on FlexPage {
+      title,
+      headline,
+      body,
+      attach {
+        rawValue
+        ...on ImageChooserBlock {
+          image {
+            url
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+You can generate a [schema.json](schema.json) reflecting the current page model with the following command:
+
+`django-admin graphql_schema`
+
+## Acknowledgements
+
+Thanks to Bryan Hyshka and Kalob Taulien for the project [hyshka/wagtail-vue-talk](https://github.com/hyshka/wagtail-vue-talk) which laid the foundations here, and to the entire Wagtail team and community for a fantastic product.
+
+[MIT License](LICENSE)

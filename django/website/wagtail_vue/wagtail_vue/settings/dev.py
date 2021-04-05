@@ -47,7 +47,7 @@ MIDDLEWARE += ( # noqa
 
 
 # See: https://github.com/django-debug-toolbar/django-debug-toolbar#installation # noqa
-INTERNAL_IPS = ('127.0.0.1', '172.17.0.1', '172.17.0.2')
+INTERNAL_IPS = ('0.0.0.0', '127.0.0.1', '172.17.0.1', '172.17.0.2')
 
 # ======== END TOOLBAR CONFIGURATION
 
