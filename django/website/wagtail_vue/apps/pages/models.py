@@ -43,7 +43,6 @@ class FlexPage(Page):
     )
     content = StreamField([
         ('ContentBlock', ContentBlock()),
-        ('ButtonBlock', ButtonBlock()),
         ('ImageGalleryBlock', ImageGalleryBlock()),
         ('CallToActionBlock', CallToActionBlock()),
     ], null=True, blank=True)

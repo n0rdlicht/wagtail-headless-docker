@@ -5,6 +5,7 @@ from .settings_base import *  # noqa
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = True
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG  # noqa
+BASE_URL = 'http://localhost:8000'
 # ======== END DEBUG CONFIGURATION
 
 
@@ -19,7 +20,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/app/website/wagtail_vue/wagtail_vue/settings/database.sqlite3',
+        'NAME': 'database.sqlite3',
     }
 }
 # ======== END DATABASE CONFIGURATION
@@ -52,8 +53,7 @@ INTERNAL_IPS = ('0.0.0.0', '127.0.0.1', '172.17.0.1', '172.17.0.2')
 # ======== END TOOLBAR CONFIGURATION
 
 ALLOWED_HOSTS += [ # noqa
-    'localhost',
-    'backend',
+    'localhost', 'backend',
 ] + list(INTERNAL_IPS)
 
 CORS_ORIGIN_ALLOW_ALL = True

@@ -8,7 +8,7 @@ _"Wagtail is not an instant website in a box."_ --[Zen of Wagtail](https://githu
 
 ## Installation
 
-After you follow the [Deployment](#Deployment) steps below, the Django server will run on port `8000`, while the
+After you follow the [Deployment](#Deployment) steps below, the Wagtail-Django server will run on port `8000`, while the
 Node.js server compiling the Vue.js app will run on port `8080`.
 
 To access the Wagtail admin go to http://localhost:8000/admin/ - and then
@@ -20,6 +20,10 @@ see the contents you have edited.
 
 The frontend app is expecting a GraphQL API to be available at `localhost:8000/graphql`.
 The regular Django API is available at `localhost:8000/api/v2/`.
+
+## Configuration
+
+Create a file at `django/website/wagtail_vue/wagtail_vue/settings/local_dev.py` if you wish to override any settings from `dev.py`.
 
 ## Deployment
 
