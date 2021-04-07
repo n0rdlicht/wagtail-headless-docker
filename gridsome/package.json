@@ -1,5 +1,5 @@
 {
-  "name": "gridsome-starter-wagtail",
+  "name": "wagtail-gridsome-docker",
   "private": true,
   "scripts": {
     "build": "gridsome build",

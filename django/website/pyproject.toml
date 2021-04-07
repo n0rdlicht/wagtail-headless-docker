@@ -1,18 +1,18 @@
 [tool.poetry]
-name = "koenizspace"
+name = "wagtail-gridsome"
 version = "0.1.0"
-description = "Coworking in Köniz"
-authors = ["Oleg Lavrovsky <oleg@utou.ch>"]
+description = "Wagtail in Gridsome"
+authors = ["Oleg Lavrovsky <oleg@spam-me-later.cc>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.6"
 django-adminactions = "1.*"
 django-extensions = "3.*"
 django-cors-headers = "3.7.*"
-wagtail-grapple = "^0.11.0"
-channels = "^3.0.3"
-wagtail = "^2.12.3"
+wagtail-grapple = "^0.11"
+channels = "^3"
+wagtail = "^2"
 
 [tool.poetry.dev-dependencies]
 bpython = "^0.21"

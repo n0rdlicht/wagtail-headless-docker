@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:lts-alpine
 MAINTAINER Oleg Lavrovsky <oleg@utou.ch>
 
 # Set a term for terminal inside the container, can't clear without it

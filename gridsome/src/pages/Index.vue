@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <g-image alt="Example image" src="~/favicon.png" width="135" />
-    <h1>Latest posts</h1>
+    <h1>All pages</h1>
     <div v-for="page in $page.wagtail.pages" :key="page.id">
       <h2>{{ page.title }}</h2>
       <p class="headline">{{ page.headline}}</p>

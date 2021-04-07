@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3
 
 # Needed for better experience in container terminal
 ENV TERM=xterm-256color
