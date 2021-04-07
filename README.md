@@ -1,8 +1,29 @@
-# Wagtail on Gridsome
+# Headless Wagtail with Gridsome
 
-This is a boilerplate project that demonstrates how to use [Wagtail CMS](https://github.com/wagtail)
-with a [Vue.js](https://vuejs.org/) frontend based on [Gridsome](https://gridsome.org/),
-a modern PWA engine with support for GraphQL and other data sources. It makes it easier to deploy Wagtail as a self-hosted headless CMS for high-performance hosting on CDN platforms.
+This is a boilerplate that demonstrates how to use [Wagtail CMS](https://github.com/wagtail)
+with a [Vue.js](https://vuejs.org/) frontend based on [Gridsome](https://gridsome.org/) -
+an open source PWA engine with support for GraphQL and other data sources.
+The goal of this project is to make it easier to deploy Wagtail as self-hosted headless CMS,
+and provide an example frontend compatible with modern CDN platforms.
+
+👋 Say hello in the **#headless** channel on the [Wagtail Slack](https://github.com/wagtail/wagtail/wiki/Slack) 💬
+
+## Inspiration
+
+Investigation into using Wagtail as a "[headless](https://en.wikipedia.org/wiki/Headless_content_management_system)" [CMS](https://jamstack.org/headless-cms/) has been discussed for a while. Many people enjoy working with Wagtail, which supports Django's flexible and reliable data models, multiple websites and web service standards out of the box. Since around version 2.9 there has been increasing interest, though still not much official [documentation](https://docs.wagtail.io/en/stable/search.html?q=headless) on how to get set up. You can use the mature Django REST API as outlined in a 2017 blog post by [Brent Clark](https://wagtail.io/blog/getting-started-with-wagtail-and-graphql/), or the more edgy GraphQL API, discussed by [Oliver Sartun](https://wagtail.io/blog/graphql-with-streamfield/). There are no technical impediments today in the way of an excellent site powered by an edge service with content served headlessly from Wagtail!
+
+Recently maintained builds with similar goals include:
+
+- https://github.com/octue/planex-cms (Gatsby, Grapple)
+- https://github.com/tbrlpld/wagtail-gatsby-blog-backend (Gatsby, Grapple)
+- https://github.com/torchbox/wagtail-headless-preview (React, REST)
+- https://github.com/datalets/blemmy (REST)
+
+See also the following presentations on the topic:
+
+- [Wagtail Headless CMS Workshop (with Vue.js)](https://www.youtube.com/watch?v=xUWd3o6z2bk)
+- [Wagtail Space US 2018: Michael Harrison, 'Wagtail as a Headless CMS'](https://www.youtube.com/watch?v=xUWd3o6z2bk)
+- [Gatsby + Wagtail + Netlify (with a little GitPod) – Dawn Wages @ Wagtail Space US 2020](https://www.youtube.com/watch?v=FP907CJsSBk)
 
 _"Wagtail is not an instant website in a box."_ --[Zen of Wagtail](https://github.com/wagtail/wagtail/blob/main/docs/getting_started/the_zen_of_wagtail.md)
 
@@ -94,6 +115,6 @@ You can generate a [schema.json](schema.json) reflecting the current page model 
 
 ## Acknowledgements
 
-Thanks to Bryan Hyshka and Kalob Taulien for the project [hyshka/wagtail-vue-talk](https://github.com/hyshka/wagtail-vue-talk) which laid the foundations here, and to the entire Wagtail team and community for a fantastic product.
+Thanks to Bryan Hyshka and Kalob Taulien for the project [hyshka/wagtail-vue-talk](https://github.com/hyshka/wagtail-vue-talk) (in [video form here](https://www.youtube.com/watch?v=xUWd3o6z2bk) by Coding For Everybody) which laid many foundations, and to the entire Wagtail team and community for a fantastic product.
 
 [MIT License](LICENSE)
