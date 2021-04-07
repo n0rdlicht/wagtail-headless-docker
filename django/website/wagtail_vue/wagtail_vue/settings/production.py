@@ -128,7 +128,7 @@ if 'LOG_DIR' in env:
     # Wagtail log
     LOGGING['handlers']['wagtail_file'] = {
         'level':        'WARNING',
-        'class':        'cloghandler.ConcurrentRotatingFileHandler',
+        'class':        'concurrent_log_handler.ConcurrentRotatingFileHandler',
         'filename':     os.path.join(env['LOG_DIR'], 'wagtail.log'),
         'maxBytes':     5242880, # 5MB
         'backupCount':  5
@@ -138,7 +138,7 @@ if 'LOG_DIR' in env:
     # Error log
     LOGGING['handlers']['errors_file'] = {
         'level':        'ERROR',
-        'class':        'cloghandler.ConcurrentRotatingFileHandler',
+        'class':        'concurrent_log_handler.ConcurrentRotatingFileHandler',
         'filename':     os.path.join(env['LOG_DIR'], 'error.log'),
         'maxBytes':     5242880, # 5MB
         'backupCount':  5

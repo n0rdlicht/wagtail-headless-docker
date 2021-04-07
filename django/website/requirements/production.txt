@@ -2,3 +2,5 @@
 -r req_base.txt
 
 dj_database_url
+psycopg2-binary
+concurrent_log_handler

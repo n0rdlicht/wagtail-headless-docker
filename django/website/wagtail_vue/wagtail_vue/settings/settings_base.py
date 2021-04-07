@@ -196,7 +196,7 @@ INSTALLED_APPS = (
     'taggit',
     'corsheaders',
 
-    'pages',
+    'apps.pages',
 )
 # ======== END APP CONFIGURATION
 
@@ -221,6 +221,26 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
+        },
+    },
+    'loggers': {
+        'wagtail': {
+            'handlers':     [],
+            'level':        'WARNING',
+            'propagate':    False,
+            'formatter':    'verbose',
+        },
+        'django.request': {
+            'handlers':     ['mail_admins'],
+            'level':        'ERROR',
+            'propagate':    False,
+            'formatter':    'verbose',
+        },
+        'django.security': {
+            'handlers':     ['mail_admins'],
+            'level':        'ERROR',
+            'propagate':    False,
+            'formatter':    'verbose',
         },
     },
 }
