@@ -10,14 +10,16 @@ and provide an example frontend compatible with modern CDN platforms.
 
 ## Inspiration
 
-Investigation into using Wagtail as a "[headless](https://en.wikipedia.org/wiki/Headless_content_management_system)" [CMS](https://jamstack.org/headless-cms/) has been discussed for a while. Many people enjoy working with Wagtail, which supports Django's flexible and reliable data models, multiple websites and web service standards out of the box. Since around version 2.9 there has been increasing interest, though still not much official [documentation](https://docs.wagtail.io/en/stable/search.html?q=headless) on how to get set up. You can use the mature Django REST API as outlined in a 2017 blog post by [Brent Clark](https://wagtail.io/blog/getting-started-with-wagtail-and-graphql/), or the more edgy GraphQL API, discussed by [Oliver Sartun](https://wagtail.io/blog/graphql-with-streamfield/). There are no technical impediments today in the way of an excellent site powered by an edge service with content served headlessly from Wagtail!
+Investigation into using Wagtail as a "[headless](https://en.wikipedia.org/wiki/Headless_content_management_system)" [CMS](https://jamstack.org/headless-cms/), a mode closely related to [single-page application](https://en.wikipedia.org/wiki/Single-page_application) (SPA), has been discussed for a while. Many people enjoy working with Wagtail, which supports Django's flexible and reliable data models, multiple websites and web service standards out of the box.
 
-Recently maintained builds with similar goals include:
+Since around version 2.9 there has been increasing interest, with community attempts such as [datalets/blemmy](https://github.com/datalets/blemmy), but still not much official [documentation](https://docs.wagtail.io/en/stable/search.html?q=headless) on how to set up in headless mode. You can use the mature REST APIs as outlined in a 2017 blog post by [Brent Clark](https://wagtail.io/blog/getting-started-with-wagtail-and-graphql/) - or the more edgy GraphQL APIs via [Wagtail Grapple](https://wagtail-grapple.readthedocs.io/en/latest/) as in this project (with [Ariadne](https://ariadnegraphql.org/docs/django-integration) and [Strawberry](https://github.com/strawberry-graphql/strawberry) as top alternatives), discussed among others by [Oliver Sartun](https://wagtail.io/blog/graphql-with-streamfield/).
+
+There are no technical impediments today in the way of an excellent site powered by an edge service with content served headlessly from Wagtail! Recently maintained builds with similar goals include:
 
 - https://github.com/octue/planex-cms (Gatsby, Grapple)
 - https://github.com/tbrlpld/wagtail-gatsby-blog-backend (Gatsby, Grapple)
 - https://github.com/torchbox/wagtail-headless-preview (React, REST)
-- https://github.com/datalets/blemmy (REST)
+- https://gitlab.com/thelabnyc/wagtail-spa-integration (Angular/Next.js)
 
 See also the following presentations on the topic:
 
@@ -27,7 +29,7 @@ See also the following presentations on the topic:
 
 _"Wagtail is not an instant website in a box."_ --[Zen of Wagtail](https://github.com/wagtail/wagtail/blob/main/docs/getting_started/the_zen_of_wagtail.md)
 
-## Installation
+# Installation
 
 After you follow the [Deployment](#Deployment) steps below, the Wagtail-Django server will run on port `8000`, while the
 Node.js server compiling the Vue.js app will run on port `8080`.
