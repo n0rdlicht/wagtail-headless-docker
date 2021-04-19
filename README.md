@@ -24,7 +24,7 @@ There are no technical impediments today in the way of an excellent site powered
 See also the following presentations on the topic:
 
 - [Wagtail Headless CMS Workshop (with Vue.js)](https://www.youtube.com/watch?v=xUWd3o6z2bk)
-- [Wagtail Space US 2018: Michael Harrison, 'Wagtail as a Headless CMS'](https://www.youtube.com/watch?v=xUWd3o6z2bk)
+- [Wagtail Space US 2018: Michael Harrison, 'Wagtail as a Headless CMS'](https://www.youtube.com/watch?v=HZT14u6WwdY)
 - [Gatsby + Wagtail + Netlify (with a little GitPod) – Dawn Wages @ Wagtail Space US 2020](https://www.youtube.com/watch?v=FP907CJsSBk)
 
 _"Wagtail is not an instant website in a box."_ --[Zen of Wagtail](https://github.com/wagtail/wagtail/blob/main/docs/getting_started/the_zen_of_wagtail.md)
