@@ -1,37 +1,34 @@
 .PHONY: build
 
 SHELL := /bin/bash
-CONTAINERNAME_BACKEND=wagtail_vue_backend
-IMAGENAME_BACKEND=wagtail_vue:backend
-CONTAINERNAME_FRONTEND=wagtail_vue_gridsome
-IMAGENAME_FRONTEND=wagtail_vue:gridsome
+IMAGENAME=wagtail_grapple
+WAGTAIL_VERSION=2.15.2
+GH_ORG=cividi
 
 build: ## Build the Docker images
-	docker-compose -p wagtail_vue build
+	docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/$(GH_ORG)/$(IMAGENAME):latest -t ghcr.io/$(GH_ORG)/$(IMAGENAME):$(WAGTAIL_VERSION) --push ./django
+	# docker-compose -p wagtail_grapple build
 
-up: build ## Bring the  Docker containers up
-	docker-compose -p wagtail_vue up -d || echo 'Already up!'
+up: ## Bring the  Docker containers up
+	docker-compose -p wagtail_grapple up -d || echo 'Already up!'
 
 upwin:  ## Bring the Docker container up for bash on ubuntu folk
 	export WINDIR="$(subst /mnt/c,//c,$(CURDIR))/" && make up
 
 lint: build ## Lint the python code.
-	docker run -v $(CURDIR)/django:/app $(IMAGENAME_BACKEND) /bin/bash -c 'flake8 website'
+	docker run -v $(CURDIR)/django:/app $(IMAGENAME) /bin/bash -c 'flake8 website'
 
 down: ## Stop the backend Docker container
 	docker-compose -p wagtail_vue stop
 
 enter: ## Enter backend container
-	docker exec -it $(CONTAINERNAME_BACKEND) /bin/bash
-
-frontend: ## Enter frontend container
-	docker exec -it $(CONTAINERNAME_FRONTEND) /bin/sh
+	docker exec -it $(IMAGENAME) /bin/bash
 
 clean: ## Stop and remove all Docker containers
 	docker-compose down
 
 destroy: ## Remove all our Docker images
-	docker rmi -f $(IMAGENAME_BACKEND) $(IMAGENAME_FRONTEND)
+	docker rmi -f $(IMAGENAME)
 
 refresh: clean up enter
 	## Let's start again

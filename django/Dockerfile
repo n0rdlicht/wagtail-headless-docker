@@ -1,4 +1,7 @@
-FROM alpine:3
+FROM --platform=$BUILDPLATFORM alpine:3
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
 
 # Needed for better experience in container terminal
 ENV TERM=xterm-256color

@@ -2,25 +2,11 @@ version: '3'
 services:
   backend:
     network_mode: "bridge"
-    build: ./django
-    container_name: wagtail_vue_backend
-    image: wagtail_vue:backend
+    # build: ./django
+    container_name: wagtail_grapple
+    image: ghcr.io/cividi/wagtail_grapple:latest
     ports:
       - "8000:8000"
     volumes:
       - ./django:/app
     stdin_open: true
-  gridsome:
-    network_mode: "bridge"
-    links:
-      - backend
-    build: ./gridsome
-    container_name: wagtail_vue_gridsome
-    image: wagtail_vue:gridsome
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./gridsome:/app
-      - /app/node_modules
-    stdin_open: true
-    command: /bin/sh -c "while true; do echo launch via make; sleep 10; done;"
