@@ -4,7 +4,7 @@ services:
     network_mode: "bridge"
     # build: ./django
     container_name: wagtail_grapple
-    image: ghcr.io/cividi/wagtail_grapple:latest
+    image: ghcr.io/cividi/wagtail_grapple:dev
     ports:
       - "8000:8000"
     volumes:

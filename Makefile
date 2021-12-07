@@ -9,6 +9,9 @@ build: ## Build the Docker images
 	docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/$(GH_ORG)/$(IMAGENAME):latest -t ghcr.io/$(GH_ORG)/$(IMAGENAME):$(WAGTAIL_VERSION) --push ./django
 	# docker-compose -p wagtail_grapple build
 
+build-dev:
+	docker buildx build --build-arg ENVIRONMENT=dev --platform linux/amd64,linux/arm64 -t ghcr.io/$(GH_ORG)/$(IMAGENAME):dev --push ./django
+
 up: ## Bring the  Docker containers up
 	docker-compose -p wagtail_grapple up -d || echo 'Already up!'
 
@@ -19,7 +22,7 @@ lint: build ## Lint the python code.
 	docker run -v $(CURDIR)/django:/app $(IMAGENAME) /bin/bash -c 'flake8 website'
 
 down: ## Stop the backend Docker container
-	docker-compose -p wagtail_vue stop
+	docker-compose -p wagtail_grapple stop
 
 enter: ## Enter backend container
 	docker exec -it $(IMAGENAME) /bin/bash
