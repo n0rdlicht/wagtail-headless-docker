@@ -6,6 +6,10 @@ from sys import path
 
 from django.core.exceptions import ImproperlyConfigured
 
+import dj_database_url
+
+env = os.environ.copy()
+
 # ======== PATH CONFIGURATION
 # Absolute filesystem path to the Django project directory:
 DJANGO_ROOT = dirname(dirname(abspath(__file__)))
@@ -21,9 +25,8 @@ SITE_NAME = basename(DJANGO_ROOT)
 path.append(DJANGO_ROOT)
 # ======== END PATH CONFIGURATION
 
-ALLOWED_HOSTS = [
-    '.wagtail-vue-definately-a-real-wesbite-we-promise.com',
-]
+if 'DJANGO_ALLOWED_HOSTS' in env:
+    ALLOWED_HOSTS = env['DJANGO_ALLOWED_HOSTS'].split(',')
 
 # ======== DEBUG CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
@@ -47,7 +50,7 @@ MANAGERS = ADMINS
 
 # ======== GENERAL CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#time-zone
-TIME_ZONE = 'Canada/Mountain'
+TIME_ZONE = 'Europe/Zurich'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = 'en-us'
@@ -77,30 +80,34 @@ MEDIA_URL = '/media/'
 
 # ======== STATIC FILE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = normpath(join(SITE_ROOT, 'static_collected'))
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = '/static/'
+# Moving static assets to DigitalOcean Spaces as per:
+# https://www.digitalocean.com/community/tutorials/how-to-set-up-object-storage-with-django
+AWS_ACCESS_KEY_ID = os.getenv('STATIC_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('STATIC_SECRET_KEY')
 
-# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS # noqa: E501
-STATICFILES_DIRS = (
-    normpath(join(SITE_ROOT, 'static')),
-)
+AWS_STORAGE_BUCKET_NAME = os.getenv('STATIC_BUCKET_NAME')
+AWS_S3_ENDPOINT_URL = os.getenv('STATIC_ENDPOINT_URL')
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+AWS_DEFAULT_ACL = 'public-read'
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders # noqa: E501
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
+STATIC_URL = '{}/{}/'.format(AWS_S3_ENDPOINT_URL, AWS_LOCATION)
+STATIC_ROOT = 'static/'
 # ======== END STATIC FILE CONFIGURATION
 
 
 # ======== SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key only used for development and testing.
-SECRET_KEY = r'lbo=9bzcg-hkmubso1n!6%at5@8u2+=&g%2um8wk7jjpnkczqg'
+if 'DJANGO_SECRET_KEY' in env:
+    SECRET_KEY = env['DJANGO_SECRET_KEY']
 # ======== END SECRET CONFIGURATION
 
 
@@ -197,6 +204,7 @@ INSTALLED_APPS = (
     'corsheaders',
 
     'apps.pages',
+    'storages',
 )
 # ======== END APP CONFIGURATION
 
@@ -259,8 +267,13 @@ WAGTAIL_SITE_NAME = "Wagtail/Vue Website"
 
 # ======== GRAPPLE CONFIGURATION
 GRAPHENE = { "SCHEMA": "grapple.schema.schema" }
-GRAPPLE_APPS = { "pages": "" }
+GRAPPLE = { "apps": {"pages": "" }}
 # ======== END GRAPPLE CONFIGURATION
+
+# Database
+
+if 'DATABASE_URL' in os.environ:
+    DATABASES = {'default': dj_database_url.config()}
 
 # ======== ERROR MESSAGE FOR MISSING ENVIRONMENT VARIABLES
 def get_env_variable(var_name):

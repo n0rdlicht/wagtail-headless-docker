@@ -14,18 +14,6 @@ BASE_URL = 'http://localhost:8000'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # ======== END EMAIL CONFIGURATION
 
-
-# ======== DATABASE CONFIGURATION
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'database.sqlite3',
-    }
-}
-# ======== END DATABASE CONFIGURATION
-
-
 # ======== CACHE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
 CACHES = {

@@ -1,6 +1,6 @@
 ARG ENVIRONMENT=prod
 
-FROM --platform=$BUILDPLATFORM alpine:3 as base
+FROM --platform=$BUILDPLATFORM python:3.8-alpine as base
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
@@ -8,50 +8,84 @@ RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
 # Needed for better experience in container terminal
 ENV TERM=xterm-256color
 
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
+ADD website/requirements /opt/requirements
+
+RUN apk update
+RUN apk add \
+      bash \
+      git wget \
+      gcc libc-dev \
+      python3-dev py3-pip \
+      py3-greenlet py3-pillow \
+      libffi-dev zlib-dev jpeg-dev \
+      py3-cffi py3-cryptography
+
+RUN set -ex \
+    && apk add --no-cache --virtual .build-deps postgresql-dev build-base \
+    && python3 -m venv /env \
+    && /env/bin/pip install --upgrade pip setuptools wheel
+
+# Add bash aliases
+ADD bash_aliases /root/.bash_aliases
+
+FROM base as dev
 # Update and install
 RUN apk update
 RUN apk add \
       bash \
       git wget \
       gcc libc-dev \
-      libpq-dev \
       python3-dev py3-pip \
       py3-greenlet py3-pillow \
       py3-cffi py3-cryptography
 
-# Set the encoding to avoid issues with internationalization packages.
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
+RUN set -ex \
+    && /env/bin/pip install --no-cache-dir -r /opt/requirements/dev.txt \
+    && runDeps="$(scanelf --needed --nobanner --recursive /env \
+        | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+        | sort -u \
+        | xargs -r apk info --installed \
+        | sort -u)" \
+    && apk add --virtual rundeps $runDeps \
+    && apk del .build-deps
 
-RUN pip3 install --upgrade pip setuptools wheel
-
-# Add the project requirements
-ADD website/requirements /opt/requirements
-
-FROM base as dev
-# Install the requirements, remove 3 for wagtail
-RUN /bin/bash -c 'cd /opt \
-      && pip3 install -r requirements/dev.txt'
-
+ENV VIRTUAL_ENV /env
+ENV PATH /env/bin:$PATH
 # Set the needed variables
-ENV PYTHONPATH=/app/website/wagtail_vue:/app/website/wagtail_vue/apps
+ENV PYTHONPATH=/app/wagtail_vue:/app/wagtail_vue/apps
 ENV DJANGO_SETTINGS_MODULE=wagtail_vue.settings.dev
 
-FROM base as prod
-# Install the requirements, remove 3 for wagtail
-RUN /bin/bash -c 'cd /opt \
-      && pip3 install -r requirements/production.txt'
+# change to /app for the working directory, you should mount the local dir volume here
 
+WORKDIR /app
+EXPOSE 8000
+
+FROM base as prod
+
+RUN set -ex \
+    && /env/bin/pip install --no-cache-dir -r /opt/requirements/production.txt \
+    && runDeps="$(scanelf --needed --nobanner --recursive /env \
+        | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+        | sort -u \
+        | xargs -r apk info --installed \
+        | sort -u)" \
+    && apk add --virtual rundeps $runDeps \
+    && apk del .build-deps
+
+ENV VIRTUAL_ENV /env
+ENV PATH /env/bin:$PATH
 # Set the needed variables
-ENV PYTHONPATH=/app/website/wagtail_vue:/app/website/wagtail_vue/apps
+ENV PYTHONPATH=/app/wagtail_vue:/app/wagtail_vue/apps
 ENV DJANGO_SETTINGS_MODULE=wagtail_vue.settings.production
 
-FROM ${ENVIRONMENT}
-
-# Add bash aliases
-ADD bash_aliases /root/.bash_aliases
-
+ADD ./django/website/wagtail /app
 # change to /app for the working directory, you should mount the local dir volume here
 WORKDIR /app
-
 EXPOSE 8000
+
+CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "wagtail_vue.wsgi:application"]
+
+FROM ${ENVIRONMENT}

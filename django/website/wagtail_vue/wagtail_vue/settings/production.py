@@ -2,7 +2,7 @@
 from .settings_base import *
 
 import os
-import dj_database_url
+import logging.config
 
 # Do not set SECRET_KEY, Postgres or LDAP password or any other sensitive data here.
 # Instead, use environment variables or create a local.py file on the server.
@@ -19,7 +19,7 @@ env = os.environ.copy()
 
 # Basic configuration
 
-APP_NAME = env.get('APP_NAME', 'wagtailvue')
+# APP_NAME = env.get('APP_NAME', 'wagtailvue')
 
 if 'SECRET_KEY' in env:
     SECRET_KEY = env['SECRET_KEY']
@@ -40,36 +40,6 @@ if 'CACHE_PURGE_URL' in env:
             'BACKEND': 'wagtail.contrib.frontend_cache.backends.HTTPBackend',
             'LOCATION': env['CACHE_PURGE_URL'],
         },
-    }
-
-if 'STATIC_URL' in env:
-    STATIC_URL = env['STATIC_URL']
-
-if 'STATIC_DIR' in env:
-    STATIC_ROOT = env['STATIC_DIR']
-
-if 'MEDIA_URL' in env:
-    MEDIA_URL = env['MEDIA_URL']
-
-if 'MEDIA_DIR' in env:
-    MEDIA_ROOT = env['MEDIA_DIR']
-
-
-# Database
-
-if 'DATABASE_URL' in os.environ:
-    DATABASES = {'default': dj_database_url.config()}
-
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': env.get('PGDATABASE', APP_NAME),
-            'CONN_MAX_AGE': 600,  # number of seconds database connections should persist for
-
-            # User, host and port can be configured by the PGUSER, PGHOST and
-            # PGPORT environment variables (these get picked up by libpq).
-        }
     }
 
 
@@ -124,27 +94,35 @@ if 'ELASTICSEARCH_URL' in env:
         },
     }
 
-if 'LOG_DIR' in env:
-    # Wagtail log
-    LOGGING['handlers']['wagtail_file'] = {
-        'level':        'WARNING',
-        'class':        'concurrent_log_handler.ConcurrentRotatingFileHandler',
-        'filename':     os.path.join(env['LOG_DIR'], 'wagtail.log'),
-        'maxBytes':     5242880, # 5MB
-        'backupCount':  5
-    }
-    LOGGING['loggers']['wagtail']['handlers'].append('wagtail_file')
+# Logging Configuration
 
-    # Error log
-    LOGGING['handlers']['errors_file'] = {
-        'level':        'ERROR',
-        'class':        'concurrent_log_handler.ConcurrentRotatingFileHandler',
-        'filename':     os.path.join(env['LOG_DIR'], 'error.log'),
-        'maxBytes':     5242880, # 5MB
-        'backupCount':  5
-    }
-    LOGGING['loggers']['django.request']['handlers'].append('errors_file')
-    LOGGING['loggers']['django.security']['handlers'].append('errors_file')
+# Clear prev config
+LOGGING_CONFIG = None
+
+# Get loglevel from env
+LOGLEVEL = os.getenv('DJANGO_LOGLEVEL', 'info').upper()
+
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(asctime)s %(levelname)s [%(name)s:%(lineno)s] %(module)s %(process)d %(thread)d %(message)s',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+    },
+    'loggers': {
+        '': {
+            'level': LOGLEVEL,
+            'handlers': ['console',],
+        },
+    },
+})
 
 try:
     from .local import *

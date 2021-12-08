@@ -10,10 +10,11 @@ build: ## Build the Docker images
 	# docker-compose -p wagtail_grapple build
 
 build-dev:
-	docker buildx build --build-arg ENVIRONMENT=dev --platform linux/amd64,linux/arm64 -t ghcr.io/$(GH_ORG)/$(IMAGENAME):dev --push ./django
+	docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/$(GH_ORG)/$(IMAGENAME):dev --push --build-arg ENVIRONMENT=dev ./django
+	# docker-compose -p wagtail_grapple build
 
 up: ## Bring the  Docker containers up
-	docker-compose -p wagtail_grapple up -d || echo 'Already up!'
+	docker-compose -p wagtail_grapple up -d --no-build || echo 'Already up!'
 
 upwin:  ## Bring the Docker container up for bash on ubuntu folk
 	export WINDIR="$(subst /mnt/c,//c,$(CURDIR))/" && make up
@@ -31,7 +32,7 @@ clean: ## Stop and remove all Docker containers
 	docker-compose down
 
 destroy: ## Remove all our Docker images
-	docker rmi -f $(IMAGENAME)
+	docker rmi -f ghcr.io/cividi/wagtail_grapple:dev
 
 refresh: clean up enter
 	## Let's start again
