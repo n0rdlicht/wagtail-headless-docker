@@ -5,6 +5,7 @@ ARG TARGETPLATFORM
 ARG BUILDPLATFORM
 RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM" > /log
 
+EXPOSE 8000
 # Needed for better experience in container terminal
 ENV TERM=xterm-256color
 
@@ -61,7 +62,6 @@ ENV DJANGO_SETTINGS_MODULE=wagtail_vue.settings.dev
 # change to /app for the working directory, you should mount the local dir volume here
 
 WORKDIR /app
-EXPOSE 8000
 
 FROM base as prod
 
@@ -81,11 +81,10 @@ ENV PATH /env/bin:$PATH
 ENV PYTHONPATH=/app/wagtail_vue:/app/wagtail_vue/apps
 ENV DJANGO_SETTINGS_MODULE=wagtail_vue.settings.production
 
-ADD ./django/website/wagtail /app
+ADD website/ /app
 # change to /app for the working directory, you should mount the local dir volume here
 WORKDIR /app
-EXPOSE 8000
 
-CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "wagtail_vue.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "wagtail_vue.wsgi:application"]
 
 FROM ${ENVIRONMENT}

@@ -2,11 +2,11 @@
 
 SHELL := /bin/bash
 IMAGENAME=wagtail_grapple
-WAGTAIL_VERSION=2.15.2
+VERSION=0.1.0
 GH_ORG=cividi
 
 build: ## Build the Docker images
-	docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/$(GH_ORG)/$(IMAGENAME):latest -t ghcr.io/$(GH_ORG)/$(IMAGENAME):$(WAGTAIL_VERSION) --push ./django
+	docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/$(GH_ORG)/$(IMAGENAME):latest -t ghcr.io/$(GH_ORG)/$(IMAGENAME):$(VERSION) --push ./django
 	# docker-compose -p wagtail_grapple build
 
 build-dev:
